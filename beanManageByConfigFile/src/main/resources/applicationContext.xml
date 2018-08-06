@@ -1,0 +1,83 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xmlns:p="http://www.springframework.org/schema/p"
+       xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd ">
+
+    <!--Bean实例化三种方式实现：-->
+    <!--（1）使用类的无参数构造创建， 等同于 user = com.zdhz.bean.User(); -->
+    <bean id="user" class="com.zdgj.bean.User"></bean>
+    <!--（2）使用静态工厂创建，相当于：user = UserFactory.getUserInstance()  -->
+    <bean id="user2" class="com.zdgj.factory.UserFactory" factory-method="getUserInstance"></bean>
+    <!--（3）使用实例工厂创建-->
+    <bean id="userFactory" class="com.zdgj.factory.UserFactory"></bean>
+    <bean id="user3" factory-bean="userFactory" factory-method="createUser"></bean>
+
+    <!-- 属性注入 -->
+    <!--（1）通过有参构造方法注入-->
+    <bean id="lilei" class="com.zdgj.bean.Student">
+        <constructor-arg name="name" value="LiLei"></constructor-arg>
+    </bean>
+    <!--（2）通过set方法注入-->
+    <bean id="hanmeimei" class="com.zdgj.bean.Student">
+        <property name="name" value="HanMeimei" ></property>
+    </bean>
+    <!--（3）p名称空间注入-->
+    <!--suppress SpringFacetInspection -->
+    <bean id="weihua" class="com.zdgj.bean.Student" p:name="WeiHua"></bean>
+
+
+
+    <!-- 对象类型的属性注入 与普通的属性注入方式一样，只是由value直接赋值换成了ref关联赋值-->
+    <bean id="userDao" class="com.zdgj.dao.UserDao"></bean>
+    <bean id="userService" class="com.zdgj.service.impl.UserServiceImpl">
+        <property name="dao" ref="userDao"></property>
+    </bean>
+
+    <!--复杂类型的属性注入，如Array、List、Set、Map、Properties-->
+    <bean id="prop" class="com.zdgj.bean.PropertyDemo">
+        <!-- 注入数组 -->
+        <property name="arrs">
+            <list>
+                <value>Value 1 of Array</value>
+                <value>Value 2 of Array</value>
+                <value>Value 3 of Array</value>
+            </list>
+        </property>
+        <!-- 注入List集合 -->
+        <property name="list">
+            <list>
+                <value>Value 1 of List</value>
+                <value>Value 2 of List</value>
+                <value>Value 3 of List</value>
+            </list>
+        </property>
+        <!-- 注入Map集合 -->
+        <property name="map">
+            <map>
+                <entry key="key1" value="Value 1 of Map"></entry>
+                <entry key="key2" value="Value 2 of Map"></entry>
+                <entry key="key3" value="Value 3 of Map"></entry>
+            </map>
+        </property>
+        <!-- 注入Properties -->
+        <property name="properties">
+            <props>
+                <prop key="username">root</prop>
+                <prop key="password">123456</prop>
+            </props>
+        </property>
+        <property name="set">
+            <set>
+                <value>Value 1 of Set</value>
+                <value>Value 2 of Set</value>
+                <value>Value 3 of Set</value>
+            </set>
+        </property>
+    </bean>
+
+
+
+
+
+</beans>
